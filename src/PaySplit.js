@@ -2,13 +2,28 @@ import React, { useState } from "react";
 import "./PaySplit.css"; // Import the CSS file
 
 const PaySplit = () => {
-    const [billAmount, setBillAmount] = useState();
+    const [billAmount, setBillAmount] = useState(0);
     const [numPeople, setNumPeople] = useState(1);
     const [tipAmount, setTipAmount] = useState(0);
     const [splitAmount, setSplitAmount] = useState(0);
     const [isCalculated, setIsCalculated] = useState(false);
+    const [billAmountErr, setBillAmountErr] = useState("");
+    const [numPeopleErr, setNumPeopleErr] = useState("");
 
     const calculateFairShare = () => {
+        // Reset errors first
+        setBillAmountErr("");
+        setNumPeopleErr("");
+
+        if (billAmount <= 0) {
+            setBillAmountErr("Bill Amount can't be zero or negative");
+            return;
+        }
+        if (numPeople <= 0) {
+            setNumPeopleErr("Number of People can't be zero or negative");
+            return;
+        }
+
         let totalAmount = billAmount + tipAmount;
         setSplitAmount((totalAmount / numPeople).toFixed(2));
         setIsCalculated(true);
@@ -20,6 +35,8 @@ const PaySplit = () => {
         setTipAmount(0);
         setSplitAmount(0);
         setIsCalculated(false);
+        setBillAmountErr("");
+        setNumPeopleErr("");
     };
 
     return (
@@ -32,18 +49,18 @@ const PaySplit = () => {
                     value={billAmount}
                     onChange={(e) => {
                         setBillAmount(parseFloat(e.target.value));
+                        setBillAmountErr(""); // Clear error on change
                     }}
                 />
-                {billAmount<=0 && <h6>Bill Amount can't be zero</h6>}
+                {billAmountErr && <h6 className="error-msg">{billAmountErr}</h6>}
             </div>
+
             <div className="input-group">
                 <label>Select Tip (₹):</label>
                 <input
                     type="number"
                     value={tipAmount}
-                    onChange={(e) => {
-                        setTipAmount(parseInt(e.target.value));
-                    }}
+                    onChange={(e) => setTipAmount(parseFloat(e.target.value))}
                 />
             </div>
             <div className="input-group">
@@ -53,17 +70,13 @@ const PaySplit = () => {
                     value={numPeople}
                     onChange={(e) => {
                         setNumPeople(parseInt(e.target.value));
+                        setNumPeopleErr(""); // Clear error on change
                     }}
                 /> 
-                {numPeople<=0  && <h6>Number of People can't be zero</h6>}
+                {numPeopleErr && <h6 className="error-msg">{numPeopleErr}</h6>}
             </div>
             <div className="button-group">
-                <button className="calculate-btn" 
-                    onClick={() => {
-                        if(billAmount>0 && numPeople>0){
-                            calculateFairShare();
-                        }
-                    }}>
+                <button className="calculate-btn" onClick={calculateFairShare}>
                     Calculate Split Share
                 </button>
                 <button className="reset-btn" type="button" onClick={handleReset}>

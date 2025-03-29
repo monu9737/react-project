@@ -48,7 +48,7 @@ input {
 
 h6 {
     color:#CC0000;
-    margin-top: 0px;
+    margin-top: 5px;
 }
 
 .button-group {
@@ -90,12 +90,13 @@ h3 {
 }
 
 .footer {
-    margin-top: 30px;
     padding: 15px;
     background: #1E1E1E;
     color: #F5F5F5;
     font-size: 14px;
     border-radius: 10px;
+    width: 90%;
+    margin: 30px auto;
 }
 
 .footer a {
