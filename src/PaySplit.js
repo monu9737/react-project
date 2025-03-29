@@ -77,7 +77,7 @@ const PaySplit = () => {
             </div>
             <div className="button-group">
                 <button className="calculate-btn" onClick={calculateFairShare}>
-                    Calculate Split Share
+                    Split Bill
                 </button>
                 <button className="reset-btn" type="button" onClick={handleReset}>
                     Reset
